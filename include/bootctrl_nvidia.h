@@ -13,17 +13,17 @@
 
 #include <stdint.h>
 
-#define OFFSET_SLOT_METADATA 0
+#define OFFSET_SLOT_METADATA		0
 
-#define BOOTCTRL_MAGIC 0x43424E00 /*magic number: '\0NBC' */
-#define BOOTCTRL_SUFFIX_A           "-A"
-#define BOOTCTRL_SUFFIX_B           "-B"
-#define MAX_SLOTS 2
-#define BOOTCTRL_VERSION 1
-#define MAX_COUNT   7
+#define BOOTCTRL_MAGIC			0x43424E00 /*magic number: '\0NBC' */
+#define BOOTCTRL_SUFFIX_A		"_a"
+#define BOOTCTRL_SUFFIX_B		"_b"
+#define MAX_SLOTS			2
+#define BOOTCTRL_VERSION		1
+#define MAX_COUNT			7
 
-/*This is just for test. Will define new slot_metadata partition */
-#define BOOTCTRL_SLOTMETADATA_FILE  "/dev/block/platform/sdhci-tegra.3/by-name/SMD"
+/* This is just for test. Will define new slot_metadata partition */
+#define BOOTCTRL_SLOTMETADATA_FILE	"/dev/block/platform/sdhci-tegra.3/by-name/SMD"
 
 typedef struct slot_info {
     /*
@@ -56,4 +56,5 @@ typedef struct smd_partition {
     /*slot parameter structure */
     slot_info_t slot_info[MAX_SLOTS];
 } smd_partition_t;
+
 #endif /* _BOOTCTRL_NVIDIA_H_ */
