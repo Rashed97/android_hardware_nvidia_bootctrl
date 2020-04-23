@@ -20,6 +20,10 @@
 
 #include "bootctrl_nvidia.h"
 
+#define LOG_TAG "nv-bootcontrolhal"
+
+#include <log/log.h>
+
 static int bootctrl_access_metadata(smd_partition_t *smd_partition, int writed)
 {
     int fd;
@@ -27,11 +31,11 @@ static int bootctrl_access_metadata(smd_partition_t *smd_partition, int writed)
     char *buf = (char*)smd_partition;
 
     if((fd = open(BOOTCTRL_SLOTMETADATA_FILE, O_RDWR)) < 0) {
-        printf("Fail to open metadata file\n");
+        ALOGE("Fail to open metadata file");
         return -EIO;
     }
     if (lseek(fd, OFFSET_SLOT_METADATA, SEEK_SET) < 0) {
-        printf("Error seeking to metadata offset\n");
+        ALOGE("Error seeking to metadata offset");
         goto error;
     }
 
@@ -40,13 +44,13 @@ static int bootctrl_access_metadata(smd_partition_t *smd_partition, int writed)
 
     if(sz < 0) {
 
-        printf("Fail to %s slot metadata \n", (writed)?("write"):("read"));
+        ALOGE("Fail to %s slot metadata \n", (writed)?("write"):("read"));
         goto error;
     }
 
     /* Check if the data is correct */
     if (smd_partition->magic != BOOTCTRL_MAGIC) {
-        printf("Slot metadata is corrupted.\n");
+        ALOGE("Slot metadata is corrupted.");
         goto error;
     }
 
@@ -63,7 +67,7 @@ error:
  */
 static int bootctrl_get_active_slot()
 {
-    int i, err, slot;
+    int i, err;
     char prop[PROPERTY_VALUE_MAX];
     smd_partition_t smd_partition;
 
@@ -78,7 +82,7 @@ static int bootctrl_get_active_slot()
             return i;
     }
 
-    printf("Can not get current slot ID!\n");
+    ALOGE("Can not get current slot ID!");
     return -EINVAL;
 }
 
@@ -212,7 +216,7 @@ void bootctrl_dump_slot_info(boot_control_module_t *module __unused)
     if (err < 0)
         return;
 
-    printf("magic:0x%x, \
+    ALOGE("magic:0x%x, \
             version: %d \
             num_slots: %d\n",
             smd_partition.magic,
@@ -220,7 +224,7 @@ void bootctrl_dump_slot_info(boot_control_module_t *module __unused)
             smd_partition.num_slots);
 
     for (i = 0; i < MAX_SLOTS; i++) {
-        printf("slot: %d, \
+        ALOGE("slot: %d, \
             priority: %d, \
             suffix: %.2s, \
             retry_count: %d, \
@@ -260,7 +264,7 @@ void bootctrl_init(boot_control_module_t *module __unused)
      * we set initial value for that.
      *
      */
-    printf("Slot metadata is not initial\n");
+    ALOGE("Slot metadata is not initial");
 
     smd_partition.magic = BOOTCTRL_MAGIC;
 
