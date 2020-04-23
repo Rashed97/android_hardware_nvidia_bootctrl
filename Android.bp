@@ -32,15 +32,3 @@ cc_library_shared {
     owner: "nvidia",
 
 }
-
-cc_binary {
-    name: "bootctrl",
-
-    srcs: ["boot_control.c"],
-    shared_libs: ["libhardware"],
-    include_dirs: ["hardware/libhardware/include"],
-    local_include_dirs: ["include"],
-    cflags: ["-Wno-unused-parameter"],
-    proprietary: true,
-
-}
