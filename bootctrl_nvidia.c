@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <hardware/hardware.h>
-#include "boot_control.h"
+#include <hardware/boot_control.h>
 #include <cutils/properties.h>
 
 #include "bootctrl_nvidia.h"
@@ -207,37 +207,6 @@ unsigned bootctrl_get_current_slot(boot_control_module_t *module __unused)
     return bootctrl_get_active_slot();
 }
 
-void bootctrl_dump_slot_info(boot_control_module_t *module __unused)
-{
-    int err, i;
-    smd_partition_t smd_partition;
-
-    err = bootctrl_access_metadata(&smd_partition, 0);
-    if (err < 0)
-        return;
-
-    ALOGE("magic:0x%x, \
-            version: %d \
-            num_slots: %d\n",
-            smd_partition.magic,
-            smd_partition.version,
-            smd_partition.num_slots);
-
-    for (i = 0; i < MAX_SLOTS; i++) {
-        ALOGE("slot: %d, \
-            priority: %d, \
-            suffix: %.2s, \
-            retry_count: %d, \
-            boot_successful: %d\n",
-            i,
-            smd_partition.slot_info[i].priority,
-            smd_partition.slot_info[i].suffix,
-            smd_partition.slot_info[i].retry_count,
-            smd_partition.slot_info[i].boot_successful);
-    }
-
-}
-
 unsigned bootctrl_get_number_slots(boot_control_module_t *module __unused)
 {
     int err;
@@ -301,5 +270,4 @@ boot_control_module_t HAL_MODULE_INFO_SYM = {
     .isSlotBootable         = bootctrl_is_slot_bootable,
     .getSuffix              = bootctrl_get_suffix,
     .isSlotMarkedSuccessful = bootctrl_is_slot_marked_successful,
-    .dumpSlotInfo           = bootctrl_dump_slot_info,
 };
