@@ -16,7 +16,6 @@ cc_library_shared {
     name: "bootctrl.tegra",
     relative_install_path: "hw",
 
-    local_include_dirs: ["include"],
     srcs: ["bootctrl_nvidia.c"],
     proprietary: true,
     recovery_available: true,
@@ -30,5 +29,26 @@ cc_library_shared {
         "libz",
     ],
     owner: "nvidia",
+
+}
+
+cc_library_shared {
+    name: "android.hardware.boot@1.0-impl-tegra",
+    defaults: ["hidl_defaults"],
+    relative_install_path: "hw",
+    vendor: true,
+    owner: "nvidia",
+//    recovery_available: true,
+    srcs: ["BootControl.cpp"],
+
+    shared_libs: [
+        "libbase",
+        "liblog",
+        "libhidlbase",
+        "libhidltransport",
+        "libhardware",
+        "libutils",
+        "android.hardware.boot@1.0",
+    ],
 
 }
