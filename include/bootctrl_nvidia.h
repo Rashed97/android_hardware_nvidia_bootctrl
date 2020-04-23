@@ -21,9 +21,7 @@
 #define MAX_SLOTS			2
 #define BOOTCTRL_VERSION		1
 #define MAX_COUNT			7
-
-/* This is just for test. Will define new slot_metadata partition */
-#define BOOTCTRL_SLOTMETADATA_FILE	"/dev/block/platform/sdhci-tegra.3/by-name/SMD"
+#define BOOTCTRL_SLOTMETADATA_FILE	"/dev/block/by-name/slot-metadata"
 
 typedef struct slot_info {
     /*
